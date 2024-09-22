@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Run Laravel Pint
+if ! ./vendor/bin/pint --test -v; then
+    echo "Laravel Pint check failed. Please fix the coding standard issues before committing."
+    exit 1
+fi

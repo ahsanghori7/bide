@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('specialities', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('translation_of')->nullable();
+            $table->bigInteger('lang_id');
+            $table->string('name');
+            $table->string('slug');
+            $table->text('image')->nullable();
+            $table->boolean('status')->default(true);
+            $table->bigInteger('action_by')->nullable();
+            $table->enum('type', ['doctor', 'wellness-experts'])->default('doctor');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('specialities');
+    }
+};

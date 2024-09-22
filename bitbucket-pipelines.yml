@@ -1,0 +1,10 @@
+image: atlassian/default-image:3
+
+options:
+  max-time: 10
+pipelines:
+  branches:
+       development:
+         - step:
+            script:
+             - ssh ubuntu@13.212.219.27 "cd /var/www/html/;sudo git pull; echo 'deployed!'"

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    command: sh -c "composer update && composer install && chmod -R 777 storage/ && php-fpm -D && nginx -g 'daemon off;'"
+    image: laravel-bide-app
+    container_name: laravel_bide_app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html
+    ports:
+      - "8091:8080"
+    volumes:
+      - ./:/var/www/html
+      - laravelbidedata:/var/www/html/storage
+  mysqlbide:
+    image: mysql:8.0.3
+    container_name: mysqlbide
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+    volumes:
+      - dbbidedata:/var/lib/mysql
+
+ # redis:
+ #   image: redis:latest
+ #   command: redis-server --appendonly yes
+ #   volumes:
+ #     - .docker/redis/data:/data
+ #   ports:
+ #     - 6380:6379
+
+volumes:
+  dbbidedata:
+    driver: local
+  laravelbidedata:
+    driver: local
